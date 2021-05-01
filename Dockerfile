@@ -8,16 +8,18 @@ RUN   apt-get update && \
       jq \
       # Markdownlint
       ruby \
+      aspell aspell-en \
       && rm -rf /var/lib/apt/lists/*
 
 
-RUN   pip3 install yamllint
+RUN   pip3 install yamllint pyspelling pymdown-extensions
 RUN   gem install mdl
 
 COPY babellint /usr/bin/
 RUN chmod +x /usr/bin/babellint
 
 COPY .config/ /root/.config/
+COPY pyspelling-readme-md.yml /root/
 
 
 ENTRYPOINT [ "/usr/bin/babellint" ]

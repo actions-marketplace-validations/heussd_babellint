@@ -13,27 +13,47 @@ function fail {
     exit 1
 }
 
-for arg in "$@"; do
-    trap "fail $arg" ERR
-    case "$arg" in
+for file in "$@"; do
+    # In sparse repositories, some files might be listed but not exist. Skip these.
+    if [[ ! -e "$file" ]]; then
+        continue
+    fi
+
+    trap "fail $file" ERR # VS Code is wrong here, don't use single quotes!
+
+    # Casing should not matter
+    pattern=$(echo "$file" | tr '[:upper:]' '[:lower:]')
+
+    case "$pattern" in
+        readme.md)
+            if [[ -e ".wordlist.txt" ]]; then
+                cp ".wordlist.txt" /root/wordlist.txt
+            fi
+
+            # Assume that the current folder is a valid proper name
+            folder=${PWD##*/}
+            echo "$folder" >> /root/wordlist.txt
+
+            pyspelling --config /root/pyspelling-readme-md.yml --name "Readme.md" --source "$file"
+            ;& # Yes, fall through please
         *.md)
             # https://github.com/markdownlint/markdownlint/blob/master/docs/configuration.md
-            mdl "$arg"
+            mdl "$file"
             ;;
         *.json)
-            jq . "$arg" > /dev/null
+            jq . "$file" > /dev/null
 
-            reformatted=$(jq . "$arg" -S)
-            printf "%s" "$reformatted" > "$arg"
+            reformatted=$(jq . "$file" -S)
+            printf "%s" "$reformatted" > "$file"
             ;;
         *.yaml)
             ;&
         *.yml)
-            yamllint "$arg"
+            yamllint "$file"
             ;;
         *)
             echo ""
-            echo "Error: Don't know how to lint $arg"
+            echo "Error: Don't know how to lint $file"
             exit 1
             ;;
     esac
