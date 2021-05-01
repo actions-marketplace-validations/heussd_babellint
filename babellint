@@ -37,8 +37,7 @@ for file in "$@"; do
             pyspelling --config /root/pyspelling-readme-md.yml --name "Readme.md" --source "$file"
             ;& # Yes, fall through please
         *.md)
-            # https://github.com/markdownlint/markdownlint/blob/master/docs/configuration.md
-            mdl "$file"
+            markdownlint --fix  "$file"
             ;;
         *.json)
             jq . "$file" > /dev/null

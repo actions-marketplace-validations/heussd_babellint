@@ -1,28 +1,25 @@
-FROM ubuntu
+FROM node:current-alpine
 
-RUN   apt-get update && \
-      apt-get -y install --no-install-recommends \
+
+RUN   apk add --no-cache --update \
+      bash \
       # yamllint
-      python3 python3-pip \
+      python3 py-pip python3-dev libxml2-dev libxslt-dev g++ gcc \
       # json linter
       jq \
-      # Markdownlint
-      ruby \
-      ca-certificates \
-      aspell aspell-en \
-      # Python dependencies
-      python-lxml python3-dev libxml2-dev libxslt-dev g++ gcc zlib1g-dev \
-      && rm -rf /var/lib/apt/lists/*
-
+      # Spellcheck
+      aspell aspell-en
 
 RUN   pip3 install yamllint pyspelling pymdown-extensions
-RUN   gem install mdl
 
-COPY babellint /usr/bin/
-RUN chmod +x /usr/bin/babellint
+RUN   npm install -g markdownlint-cli
+
+WORKDIR /
+COPY babellint ./
+RUN chmod +x babellint
 
 COPY .config/ /root/.config/
 COPY pyspelling-readme-md.yml /root/
 
 
-ENTRYPOINT [ "/usr/bin/babellint" ]
+ENTRYPOINT [ "/babellint" ]
