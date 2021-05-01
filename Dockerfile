@@ -8,6 +8,7 @@ RUN   apt-get update && \
       jq \
       # Markdownlint
       ruby \
+      ca-certificates \
       aspell aspell-en \
       # Python dependencies
       python-lxml python3-dev libxml2-dev libxslt-dev g++ gcc zlib1g-dev \
