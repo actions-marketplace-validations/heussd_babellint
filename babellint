@@ -16,6 +16,10 @@ function fail {
 for arg in "$@"; do
     trap "fail $arg" ERR
     case "$arg" in
+        *.md)
+            # https://github.com/markdownlint/markdownlint/blob/master/docs/configuration.md
+            mdl "$arg"
+            ;;
         *.json)
             jq . "$arg" > /dev/null
 
