@@ -17,10 +17,10 @@ for arg in "$@"; do
     trap "fail $arg" ERR
     case "$arg" in
         *.json)
-            jq . "$1" > /dev/null
+            jq . "$arg" > /dev/null
 
-            reformatted=$(jq . "$1" -S)
-            printf "%s" "$reformatted" > "$1"
+            reformatted=$(jq . "$arg" -S)
+            printf "%s" "$reformatted" > "$arg"
             ;;
         *.yaml)
             ;&
@@ -28,6 +28,7 @@ for arg in "$@"; do
             yamllint "$arg"
             ;;
         *)
+            echo ""
             echo "Error: Don't know how to lint $arg"
             exit 1
             ;;
