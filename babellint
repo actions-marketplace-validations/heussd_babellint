@@ -43,8 +43,11 @@ for file in "$@"; do
         *.json)
             jq . "$file" > /dev/null
 
+            base=$(jq . "$file")
             reformatted=$(jq . "$file" -S)
-            printf "%s" "$reformatted" > "$file"
+            if [[ "$base" != "$reformatted" ]]; then
+                printf "%s" "$reformatted" > "$file"
+            fi
             ;;
         *.yaml)
             ;&
