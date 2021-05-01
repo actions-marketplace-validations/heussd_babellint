@@ -9,6 +9,8 @@ RUN   apt-get update && \
       # Markdownlint
       ruby \
       aspell aspell-en \
+      # Python dependencies
+      python-lxml python3-dev libxml2-dev libxslt-dev g++ gcc zlib1g-dev \
       && rm -rf /var/lib/apt/lists/*
 
 
