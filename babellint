@@ -44,7 +44,7 @@ for file in "$@"; do
     mimetype=$(file --brief --mime-type "$file")
     case "$mimetype" in
         text/x-shellscript)
-            shellcheck "$file"
+            shellcheck --color=always "$file"
         ;;
     esac
 
