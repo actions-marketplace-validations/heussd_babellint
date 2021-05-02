@@ -3,15 +3,36 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-if [ $# -eq 0 ]; then
-    echo "Usage: babellint <File(s)>"
-    exit 255
-fi
+
+function print {
+    echo -e "\033[0;34m[babellint]\033[0m $1"
+}
+function printerr {
+    print "\033[0;31m𐄂 $1 \033[0m"
+}
+function printok {
+    print "✓ $1"
+}
 
 function fail {
-    echo "Failed to lint ${PWD}/$1"
+    printerr "$1"
     exit 1
 }
+
+
+if [ $# -eq 0 ]; then
+    # Do explicit file provided. List files myself and call self with each.
+    print "Linting $PWD..."
+
+    GITOPTS="--git-dir=.git"
+    if [[ -e "$(pwd)/.dotfiles-bare-repo/" ]]; then
+        GITOPTS="--git-dir=.dotfiles-bare-repo/"
+    fi
+
+    git "$GITOPTS" ls-files | tr "\n" "\0" | xargs -I {} -0 bash -c "$0 \"{}\"" || fail "Linting errors in $PWD"
+    exit
+fi
+
 
 for file in "$@"; do
     # In sparse repositories, some files might be listed but not exist. Skip these.
@@ -25,6 +46,9 @@ for file in "$@"; do
     pattern=$(echo "$file" | tr '[:upper:]' '[:lower:]')
 
     case "$pattern" in
+        dockerfile)
+            hadolint "$file" --ignore DL3059
+            ;;
         readme.md)
             if [[ -e ".wordlist.txt" ]]; then
                 cp ".wordlist.txt" /root/wordlist.txt
@@ -34,7 +58,7 @@ for file in "$@"; do
             folder=${PWD##*/}
             echo "$folder" >> /root/wordlist.txt
 
-            pyspelling --config /root/pyspelling-readme-md.yml --name "Readme.md" --source "$file"
+            pyspelling --config /root/pyspelling-readme-md.yml --name "Readme.md" --source "$file" | head -n -1
             ;& # Yes, fall through please
         *.md)
             markdownlint --fix  "$file"
@@ -54,10 +78,10 @@ for file in "$@"; do
             yamllint "$file"
             ;;
         *)
-            echo ""
-            echo "Error: Don't know how to lint $file"
-            exit 1
+            exit 0
             ;;
     esac
+
+    printok "$file"
 done
 
