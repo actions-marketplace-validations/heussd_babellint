@@ -15,21 +15,20 @@ function printok {
 }
 
 function fail {
-    printerr "$1"
+    printerr "$1 via $(echo "$BASH_COMMAND" | awk '{print $1;}')"
     exit 1
 }
 
 
 if [ $# -eq 0 ]; then
     # Do explicit file provided. List files myself and call self with each.
-    print "Linting $PWD..."
 
     GITOPTS="--git-dir=.git"
     if [[ -e "$(pwd)/.dotfiles-bare-repo/" ]]; then
         GITOPTS="--git-dir=.dotfiles-bare-repo/"
     fi
 
-    git "$GITOPTS" ls-files | tr "\n" "\0" | xargs -I {} -0 bash -c "$0 \"{}\"" || fail "Linting errors in $PWD"
+    git "$GITOPTS" ls-files | tr "\n" "\0" | xargs -I {} -0 bash -c "$0 \"{}\"" || exit 1
     exit
 fi
 
@@ -39,13 +38,19 @@ for file in "$@"; do
     if [[ ! -e "$file" ]]; then
         continue
     fi
+    trap 'fail "$file"' ERR
 
-    trap "fail $file" ERR # VS Code is wrong here, don't use single quotes!
+
+    mimetype=$(file --brief --mime-type "$file")
+    case "$mimetype" in
+        text/x-shellscript)
+            shellcheck "$file"
+        ;;
+    esac
 
     # Casing should not matter
-    pattern=$(echo "$file" | tr '[:upper:]' '[:lower:]')
-
-    case "$pattern" in
+    name=$(echo "$file" | tr '[:upper:]' '[:lower:]')
+    case "$name" in
         dockerfile)
             hadolint "$file" --ignore DL3059
             ;;
@@ -58,7 +63,7 @@ for file in "$@"; do
             folder=${PWD##*/}
             echo "$folder" >> /root/wordlist.txt
 
-            pyspelling --config /root/pyspelling-readme-md.yml --name "Readme.md" --source "$file" | head -n -1
+            pyspelling --config /root/pyspelling-readme-md.yml --name "Readme.md" --source "$file"
             ;& # Yes, fall through please
         *.md)
             markdownlint --fix  "$file"
@@ -81,6 +86,7 @@ for file in "$@"; do
             exit 0
             ;;
     esac
+
 
     printok "$file"
 done

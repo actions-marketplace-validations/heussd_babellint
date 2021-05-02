@@ -1,6 +1,6 @@
 # babellint
 
-Lints multiple formats using third-party linters.
+Lints multiple formats using third-party linters. Configured with reasonable defaults.
 
 ## Usage
 
