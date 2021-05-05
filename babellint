@@ -23,12 +23,17 @@ function fail {
 if [ $# -eq 0 ]; then
     # Do explicit file provided. List files myself and call self with each.
 
-    GITOPTS="--git-dir=.git"
+    GITDIR=".git"
     if [[ -e "$(pwd)/.dotfiles-bare-repo/" ]]; then
-        GITOPTS="--git-dir=.dotfiles-bare-repo/"
+        GITDIR=".dotfiles-bare-repo"
     fi
 
-    git "$GITOPTS" ls-files | tr "\n" "\0" | xargs -I {} -0 bash -c "$0 \"{}\"" || exit 1
+    if [[ ! -e "$GITDIR" ]]; then
+        # No git folder exists. Terminate silently
+        exit 0
+    fi
+
+    git "$GITDIR" ls-files | tr "\n" "\0" | xargs -I {} -0 bash -c "$0 \"{}\"" || exit 1
     exit
 fi
 
