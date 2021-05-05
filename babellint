@@ -75,12 +75,6 @@ for file in "$@"; do
             ;;
         *.json)
             jq . "$file" > /dev/null
-
-            base=$(jq . "$file")
-            reformatted=$(jq . "$file" -S)
-            if [[ "$base" != "$reformatted" ]]; then
-                printf "%s" "$reformatted" > "$file"
-            fi
             ;;
         *.yaml)
             ;&
