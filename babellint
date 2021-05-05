@@ -33,7 +33,7 @@ if [ $# -eq 0 ]; then
         exit 0
     fi
 
-    git "$GITDIR" ls-files | tr "\n" "\0" | xargs -I {} -0 bash -c "$0 \"{}\"" || exit 1
+    git --git-dir="$GITDIR" ls-files | tr "\n" "\0" | xargs -I {} -0 bash -c "$0 \"{}\"" || exit 1
     exit
 fi
 
@@ -75,12 +75,6 @@ for file in "$@"; do
             ;;
         *.json)
             jq . "$file" > /dev/null
-
-            base=$(jq . "$file")
-            reformatted=$(jq . "$file" -S)
-            if [[ "$base" != "$reformatted" ]]; then
-                printf "%s" "$reformatted" > "$file"
-            fi
             ;;
         *.yaml)
             ;&
