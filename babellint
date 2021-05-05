@@ -11,7 +11,7 @@ function printerr {
     print "\033[0;31m𐄂 $1 \033[0m"
 }
 function printok {
-    print "✓ $1"
+    print "\033[0;32m✓\033[0m $1"
 }
 
 function fail {
@@ -46,13 +46,6 @@ for file in "$@"; do
     trap 'fail "$file"' ERR
 
 
-    mimetype=$(file --brief --mime-type "$file")
-    case "$mimetype" in
-        text/x-shellscript)
-            shellcheck --color=always "$file"
-        ;;
-    esac
-
     # Casing should not matter
     name=$(echo "$file" | tr '[:upper:]' '[:lower:]')
     case "$name" in
@@ -68,7 +61,7 @@ for file in "$@"; do
             folder=${PWD##*/}
             echo "$folder" >> /root/wordlist.txt
 
-            pyspelling --config /root/pyspelling-readme-md.yml --name "Readme.md" --source "$file"
+            pyspelling --config /root/pyspelling-readme-md.yml --name "Readme.md" --source "$file" | head -n -1
             ;& # Yes, fall through please
         *.md)
             markdownlint --fix  "$file"
@@ -82,10 +75,19 @@ for file in "$@"; do
             yamllint "$file"
             ;;
         *)
-            exit 0
+
+            mimetype=$(file --brief --mime-type "$file")
+            case "$mimetype" in
+                text/x-shellscript)
+                    shellcheck --color=always "$file"
+                    ;;
+                *)
+                    exit 0
+                    ;;
+            esac
+            
             ;;
     esac
-
 
     printok "$file"
 done
