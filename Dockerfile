@@ -1,6 +1,6 @@
 FROM node:current-alpine
 
-ENV   PYTHON_VERSION=3.8.8-r0 \
+ENV   PYTHON_VERSION=3.8.10-r0 \
       GCC_VERSION=10.2.1_pre1-r3
 
 RUN   apk add --no-cache --update \
