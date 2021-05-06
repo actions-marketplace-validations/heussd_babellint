@@ -47,6 +47,7 @@ for file in "$@"; do
     fi
     trap 'fail "$file"' ERR
 
+    print "  $file"
 
     # Casing should not matter
     name=$(echo "$file" | tr '[:upper:]' '[:lower:]')
@@ -84,6 +85,7 @@ for file in "$@"; do
                     shellcheck --color=always "$file"
                     ;;
                 *)
+                    echo -n -e '\e[1A\e[K'
                     exit 0
                     ;;
             esac
@@ -91,6 +93,7 @@ for file in "$@"; do
             ;;
     esac
 
+    echo -n -e '\e[1A\e[K'
     printok "$file"
 done
 
