@@ -1,5 +1,6 @@
 FROM node:current-alpine
 
+SHELL ["/bin/ash", "-o", "pipefail", "-c"]
 ENV   PYTHON_VERSION=3 \
       GCC_VERSION=10
 
@@ -23,24 +24,27 @@ RUN   apk add --no-cache --update \
       aspell-en=2020.12.07-r0
 
 RUN   pip3 install --no-cache-dir \
-      pymdown-extensions~=8.0.0 \
-      pyspelling~=2.0.0 \
-      yamllint~=1.0.0
+      pymdown-extensions==8.1.1 \
+      pyspelling==2.7.2 \
+      yamllint==1.26.1
 
 RUN   npm install -g\
       markdownlint-cli@~0.27
 
-RUN   wget https://github.com/hadolint/hadolint/releases/download/v2.3.0/hadolint-Linux-x86_64 \
+
+RUN   wget $(wget -q -O - https://api.github.com/repos/hadolint/hadolint/releases/latest \
+                  | jq -r \
+                  '.assets[] | select(.browser_download_url | contains("Linux")) | .browser_download_url') \
             --no-verbose \
             --output-document=/usr/bin/hadolint && \
             chmod +x /usr/bin/hadolint
 
+
+COPY yamllint.config pyspelling-readme-md.yml /root/
+
 WORKDIR /
 COPY babellint ./
 RUN chmod +x babellint
-
-COPY .config/ /root/.config/
-COPY pyspelling-readme-md.yml /root/
 
 
 ENTRYPOINT [ "/babellint" ]
