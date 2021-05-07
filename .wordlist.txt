@@ -1,1 +1,13 @@
+aspell
+Dockerfile
+hadolint
+jq
+json
 linters
+markdownlint
+md
+pyspelling
+README
+shellcheck
+YAML
+yamllint

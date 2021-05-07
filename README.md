@@ -1,6 +1,16 @@
 # babellint
 
-Lints multiple formats using third-party linters. Ships with reasonable defaults.
+![babellint working through all files of a git repository](babellint.gif)
+
+Lints files using multiple third-party linters:
+
+- Dockerfile: [hadolint](https://github.com/hadolint/hadolint/)
+- JSON: [jq](https://github.com/stedolan/jq/)
+- Markdown: [markdownlint](https://github.com/markdownlint/markdownlint)
+- README.md: [pyspelling](https://github.com/facelessuser/pyspelling/), [aspell](https://github.com/GNUAspell/aspell)
+- Python: [flake8](https://github.com/PyCQA/flake8)
+- Shell scripts: [shellcheck](https://github.com/koalaman/shellcheck)
+- YAML: [yamllint](https://github.com/adrienverge/yamllint)
 
 ## Usage
 
@@ -16,8 +26,6 @@ babellint README.md
 ```
 
 ### Lint all files of a git repository
-
-![babellint working through all files of a git repository](babellint.gif)
 
 ```sh
 cd $gitroot
