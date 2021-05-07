@@ -55,6 +55,9 @@ for file in "$@"; do
         dockerfile)
             hadolint "$file" --ignore DL3059
             ;;
+        *.py)
+            flake8 "$file"
+            ;;
         readme.md)
             if [[ -e ".wordlist.txt" ]]; then
                 cp ".wordlist.txt" /root/wordlist.txt
