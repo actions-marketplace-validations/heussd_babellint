@@ -12,6 +12,7 @@ RUN   apt-get update && \
       shellcheck=0* \
       # yamllint
       python3=$PYTHON_VERSION \
+      python3-dev=${PYTHON_VERSION} \
       python3-pip=18* \
       python3-setuptools=40* \
       # json linter
