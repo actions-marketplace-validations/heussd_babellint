@@ -69,7 +69,7 @@ for file in "$@"; do
 
             trap 'echo -e "You may introduce unkown words in a local dictionary via:\n\techo TinkerPop >> .wordlist.txt\n"; printerr $file via pyspelling' ERR
 
-            pyspelling --config /root/pyspelling-readme-md.yml --name "Readme.md" --source "$file" | head -n -1
+            pyspelling --config /pyspelling-readme-md.yml --name "Readme.md" --source "$file" | head -n -1
 
             trap 'fail "$file"' ERR
             ;& # Yes, fall through please
@@ -82,7 +82,7 @@ for file in "$@"; do
         *.yaml)
             ;&
         *.yml)
-            yamllint --no-warning -c /root/yamllint.config "$file"
+            yamllint --no-warning -c /yamllint.config "$file"
             ;;
         *)
 
