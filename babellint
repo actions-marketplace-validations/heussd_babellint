@@ -60,12 +60,12 @@ for file in "$@"; do
             ;;
         readme.md)
             if [[ -e ".wordlist.txt" ]]; then
-                cp ".wordlist.txt" /root/wordlist.txt
+                cp ".wordlist.txt" /pyspelling/wordlist.txt
             fi
 
             # Assume that the current folder is a valid proper name
             folder=${PWD##*/}
-            echo "$folder" >> /root/wordlist.txt
+            echo "$folder" >> /pyspelling/wordlist.txt
 
             trap 'echo -e "You may introduce unkown words in a local dictionary via:\n\techo TinkerPop >> .wordlist.txt\n"; printerr $file via pyspelling' ERR
 

@@ -19,5 +19,5 @@ matrix:
       lang: en
     dictionary:
       wordlists:
-        - /root/wordlist.txt
-      output: /root/dictionary.dic
+        - /pyspelling/wordlist.txt
+      output: /pyspelling/dictionary.dict

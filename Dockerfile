@@ -43,6 +43,9 @@ RUN   wget "$(wget -q -O - https://api.github.com/repos/hadolint/hadolint/releas
 COPY yamllint.config pyspelling-readme-md.yml /
 RUN  chmod 755 /yamllint.config /pyspelling-readme-md.yml
 
+WORKDIR /pyspelling/
+RUN   chmod 777 /pyspelling/
+
 WORKDIR /
 COPY babellint ./
 RUN chmod +x babellint
