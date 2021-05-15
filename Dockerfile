@@ -1,46 +1,50 @@
-FROM node:current-alpine
+FROM node:current-buster
 
-ENV   PYTHON_VERSION=3.8.8-r0 \
-      GCC_VERSION=10.2.1_pre1-r3
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+ENV   PYTHON_VERSION=3* \
+      GCC_VERSION=10*
 
-RUN   apk add --no-cache --update \
-      bash~=5.1.0-r0 \
-      file~=5.39-r0 \
-      git~=2.30.2-r0 \
-      shellcheck~=0.7.1-r2 \
+RUN   apt-get update && \
+      apt-get -y install --no-install-recommends \
+      bash=5* \
+      file=1* \
+      git=1* \
+      shellcheck=0* \
       # yamllint
-      python3~=$PYTHON_VERSION \
-      py3-pip~=20.3.4-r0 \
-      python3-dev~=$PYTHON_VERSION \
-      libxml2-dev~=2.9.10-r6 \
-      libxslt-dev~=1.1.34-r0 \
-      g++~=${GCC_VERSION} \
-      gcc~=${GCC_VERSION} \
+      python3=$PYTHON_VERSION \
+      python3-pip=18* \
+      python3-setuptools=40* \
       # json linter
-      jq~=1.6-r1 \
+      jq=1* \
       # Spellcheck
-      aspell~=0.60.8-r0 \
-      aspell-en=2020.12.07-r0
+      aspell=0* \
+      aspell-en=2018.04.16-0-1 \
+      && rm -rf /var/lib/apt/lists/*
 
 RUN   pip3 install --no-cache-dir \
       pymdown-extensions==8.1.1 \
       pyspelling==2.7.2 \
-      yamllint==1.26.1
+      yamllint==1.26.1 \
+      flake8==3.9.1
 
 RUN   npm install -g\
-      markdownlint-cli@0.27.1
+      markdownlint-cli@~0.27
 
-RUN   wget https://github.com/hadolint/hadolint/releases/download/v2.3.0/hadolint-Linux-x86_64 \
+
+RUN   wget "$(wget -q -O - https://api.github.com/repos/hadolint/hadolint/releases/latest \
+                  | jq -r \
+                  '.assets[] | select(.browser_download_url | contains("Linux")) | .browser_download_url')" \
             --no-verbose \
             --output-document=/usr/bin/hadolint && \
             chmod +x /usr/bin/hadolint
 
+
+COPY yamllint.config pyspelling-readme-md.yml /
+RUN  chmod 755 /yamllint.config /pyspelling-readme-md.yml
+
 WORKDIR /
 COPY babellint ./
 RUN chmod +x babellint
-
-COPY .config/ /root/.config/
-COPY pyspelling-readme-md.yml /root/
 
 
 ENTRYPOINT [ "/babellint" ]
