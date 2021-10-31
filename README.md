@@ -1,7 +1,6 @@
 # babellint
 
 ![babellint working through all files of a git repository](babellint.gif)
-
 Lints files using multiple third-party linters:
 
 - Dockerfile: [hadolint](https://github.com/hadolint/hadolint/)
