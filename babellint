@@ -26,7 +26,7 @@ if [[ "${1-}" == "--fix" ]]; then
 fi
 
 if [ $# -eq 0 ]; then
-    # Do explicit file provided. List files myself and call self with each.
+    # No explicit file provided. List files myself and call self with each.
 
     GITDIR=".git"
     if [[ -e "$(pwd)/.dotfiles-bare-repo/" ]]; then
@@ -40,6 +40,7 @@ if [ $# -eq 0 ]; then
 
     FIXOPTS=""
     if [ $fix -eq 1 ];  then
+        print "\\033[0;33m* Will try to fix some of the findings \\033[0m"
         FIXOPTS="--fix"
     fi
     git --git-dir="$GITDIR" ls-files | tr '\n' '\0' | xargs -I {} -0 bash -c "$0 $FIXOPTS \"{}\"" || exit 1
