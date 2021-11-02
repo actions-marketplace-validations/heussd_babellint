@@ -4,4 +4,3 @@ services:
   babellint:
     image: heussd/babellint
     build: .
-    
