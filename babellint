@@ -90,7 +90,13 @@ for file in "$@"; do
             markdownlint $FIXOPTS "$file"
             ;;
         *.json)
-            jq . "$file" > /dev/null
+            original=$(cat "$file")
+            reformatted=$(jq . "$file" --sort-keys)
+            if [[ "$original" != "$reformatted" ]]; then
+                if [ $fix -eq 1 ];  then
+                    printf "%s" "$reformatted" > "$file";
+                fi
+            fi
             ;;
         *.yaml)
             ;&
