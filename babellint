@@ -45,7 +45,7 @@ if [ $# -eq 0 ]; then
     fi
     git --git-dir="$GITDIR" ls-files | tr '\n' '\0' | xargs -I {} -0 bash -c "$0 $FIXOPTS \"{}\"" || exit 1
 
-    printok "\\033[0;32mAll lints passed\\033[0m"
+    printok "\\033[0;32mAll lints passed ❤️\\033[0m"
     exit
 fi
 
