@@ -11,13 +11,11 @@ Lints files using multiple third-party linters:
 - Shell scripts: [shellcheck](https://github.com/koalaman/shellcheck)
 - YAML: [yamllint](https://github.com/adrienverge/yamllint)
 
-
 ## Usage
 
 ```sh
 alias babellint='docker run --rm --interactive --tty -v $(pwd):$(pwd) -w $(pwd) ghcr.io/heussd/babellint:main'
 ```
-
 
 ### Lint specific files
 
@@ -25,7 +23,6 @@ alias babellint='docker run --rm --interactive --tty -v $(pwd):$(pwd) -w $(pwd) 
 babellint docker-compose.yml
 babellint README.md
 ```
-
 
 ### Lint all files of a git repository
 
