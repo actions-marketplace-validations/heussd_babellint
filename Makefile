@@ -1,7 +1,7 @@
 # Naming seems to be buggy
 IMAGE?=thisisignoredforsomereason:babellint
 
-default: buildkitd-start build buildkitd-stop
+default: build
 
 buildkitd-start:
 	@-podman run -d --name buildkitd --privileged moby/buildkit:latest
@@ -12,7 +12,7 @@ buildkitd-stop:
 
 build:
 	@buildctl \
-		--addr=podman-container://buildkitd \
+		--addr=tcp://$(shell multipass info podman --format json | jq -r ".info.podman.ipv4[]"):1234 \
 		build \
 		--frontend dockerfile.v0 \
 		--local context=. \
