@@ -1,10 +1,9 @@
 name: Babellint
 on: [push]
 
-
 jobs:
   babellint:
-    name: Checkout and Push
+    name: Babellint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

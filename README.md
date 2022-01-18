@@ -13,20 +13,31 @@ Lints files using multiple third-party linters:
 
 ## Usage
 
+### Command line
+
 ```sh
 alias babellint='docker run --rm --interactive --tty -v $(pwd):$(pwd) -w $(pwd) ghcr.io/heussd/babellint:main'
 ```
 
-### Lint specific files
+#### Linting specific files
 
 ```sh
 babellint docker-compose.yml
 babellint README.md
 ```
 
-### Lint all files of a git repository
+#### Linting all files of a git repository
 
 ```sh
 cd $gitroot
 babellint
 ```
+
+### GitHub Actions
+
+```yml
+- name: Babellint
+  uses: heussd/babellint@main
+```
+
+[Babellint is also using the babellint GitHub Action to ... babellint.](.github/workflows/babellint.yml)

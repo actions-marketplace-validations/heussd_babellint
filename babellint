@@ -73,6 +73,7 @@ for file in "$@"; do
                 cp ".wordlist.txt" /pyspelling/wordlist.txt
             fi
             echo "babellint" >> /pyspelling/wordlist.txt
+            echo "Babellint" >> /pyspelling/wordlist.txt
 
             # Assume that the current folder is a valid proper name
             folder=${PWD##*/}
