@@ -1,0 +1,9 @@
+name: 'Babellint'
+description: 'Lints files using multiple third-party linters'
+branding:
+  icon: terminal
+  color: blue
+
+runs:
+  using: 'docker'
+  image: 'docker://ghcr.io/heussd/babellint:main'
