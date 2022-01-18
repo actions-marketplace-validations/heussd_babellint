@@ -1,7 +1,8 @@
 # babellint
 
-![babellint working through all files of a git repository](babellint.gif)
 Lints files using multiple third-party linters:
+
+![babellint working through all files of a git repository](babellint.gif)
 
 - Dockerfile: [hadolint](https://github.com/hadolint/hadolint/)
 - JSON: [jq](https://github.com/stedolan/jq/)
