@@ -73,7 +73,7 @@ for file in "$@"; do
             if [ $fix -eq 1 ];  then
                 FIXOPTS="--fix"
             fi
-            markdownlint $FIXOPTS "$file"
+            markdownlint $FIXOPTS --config "/markdownlint.yml" "$file"
             ;;
         *.json)
             original=$(cat "$file")

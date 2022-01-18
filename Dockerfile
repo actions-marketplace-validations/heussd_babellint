@@ -36,6 +36,7 @@ RUN   wget "$(wget -q -O - https://api.github.com/repos/hadolint/hadolint/releas
 
 
 COPY yamllint.config /
+COPY markdownlint.yml /
 RUN  chmod 755 /yamllint.config 
 
 WORKDIR /
