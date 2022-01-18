@@ -17,14 +17,9 @@ RUN   apt-get update && \
       python3-setuptools=40* \
       # json linter
       jq=1* \
-      # Spellcheck
-      aspell=0* \
-      aspell-en=2018.04.16-0-1 \
       && rm -rf /var/lib/apt/lists/*
 
 RUN   pip3 install --no-cache-dir \
-      pymdown-extensions==8.1.1 \
-      pyspelling==2.7.2 \
       yamllint==1.26.1 \
       flake8==3.9.1
 
@@ -40,11 +35,8 @@ RUN   wget "$(wget -q -O - https://api.github.com/repos/hadolint/hadolint/releas
             chmod +x /usr/bin/hadolint
 
 
-COPY yamllint.config pyspelling-readme-md.yml /
-RUN  chmod 755 /yamllint.config /pyspelling-readme-md.yml
-
-WORKDIR /pyspelling/
-RUN   chmod 777 /pyspelling/
+COPY yamllint.config /
+RUN  chmod 755 /yamllint.config 
 
 WORKDIR /
 COPY babellint ./

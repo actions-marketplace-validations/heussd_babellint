@@ -7,17 +7,19 @@ Lints files using multiple third-party linters:
 - JSON: [jq](https://github.com/stedolan/jq/)
 - Markdown: [markdownlint](https://github.com/markdownlint/markdownlint)
 - Python: [flake8](https://github.com/PyCQA/flake8)
-- README.md: [pyspelling](https://github.com/facelessuser/pyspelling/), [aspell](https://github.com/GNUAspell/aspell)
 - Shell scripts: [shellcheck](https://github.com/koalaman/shellcheck)
 - YAML: [yamllint](https://github.com/adrienverge/yamllint)
 
+
 ## Usage
+
 
 ### Command line
 
 ```sh
 alias babellint='docker run --rm --interactive --tty -v $(pwd):$(pwd) -w $(pwd) ghcr.io/heussd/babellint:main'
 ```
+
 
 #### Linting specific files
 
@@ -26,12 +28,14 @@ babellint docker-compose.yml
 babellint README.md
 ```
 
+
 #### Linting all files of a git repository
 
 ```sh
 cd $gitroot
 babellint
 ```
+
 
 ### GitHub Actions
 

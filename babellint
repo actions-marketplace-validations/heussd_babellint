@@ -68,23 +68,6 @@ for file in "$@"; do
         *.py)
             flake8 "$file"
             ;;
-        readme.md)
-            if [[ -e ".wordlist.txt" ]]; then
-                cp ".wordlist.txt" /pyspelling/wordlist.txt
-            fi
-            echo "babellint" >> /pyspelling/wordlist.txt
-            echo "Babellint" >> /pyspelling/wordlist.txt
-
-            # Assume that the current folder is a valid proper name
-            folder=${PWD##*/}
-            echo "$folder" >> /pyspelling/wordlist.txt
-
-            trap 'echo -e "You may introduce unkown words in a local dictionary via:\n\techo TinkerPop >> .wordlist.txt\n"; printerr $file via pyspelling' ERR
-
-            pyspelling --config /pyspelling-readme-md.yml --name "Readme.md" --source "$file" | head -n -1
-
-            trap 'fail "$file"' ERR
-            ;& # Yes, fall through please
         *.md)
             FIXOPTS=""
             if [ $fix -eq 1 ];  then
