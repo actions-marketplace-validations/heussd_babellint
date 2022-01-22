@@ -94,7 +94,7 @@ for file in "$@"; do
             mimetype=$(file --brief --mime-type "$file")
             case "$mimetype" in
                 text/x-shellscript)
-                    shellcheck --color=always "$file"
+                    shellcheck --color=always -e SC2001 "$file"
                     ;;
                 *)
                     echo -n -e '\e[1A\e[K'
