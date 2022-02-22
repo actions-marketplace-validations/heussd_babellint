@@ -66,7 +66,7 @@ for file in "$@"; do
             hadolint "$file" --ignore DL3059
             ;;
         *.py)
-            flake8 "$file"
+            flake8 --extend-ignore=E501 "$file"
             ;;
         *.md)
             FIXOPTS=""
