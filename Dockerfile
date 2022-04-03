@@ -1,3 +1,12 @@
+# syntax=docker/dockerfile:1.4
+FROM alpine:3 as hadolint
+
+SHELL ["/bin/ash", "-o", "pipefail", "-c"]
+RUN   apk add --no-cache --update wget=1.21.2-r2 jq=1.6-r1 ca-certificates=20211220-r0
+RUN   wget "$(wget -q -O - https://api.github.com/repos/hadolint/hadolint/releases/latest | jq -r '.assets[] | select(.browser_download_url | contains("Linux")) | .browser_download_url' | grep "$(apk --print-arch)")" --no-verbose --output-document=/hadolint
+
+
+
 FROM node:current-buster
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -27,17 +36,12 @@ RUN   npm install -g\
       markdownlint-cli@~0.27
 
 
-RUN   wget "$(wget -q -O - https://api.github.com/repos/hadolint/hadolint/releases/latest \
-                  | jq -r \
-                  '.assets[] | select(.browser_download_url | contains("Linux")) | .browser_download_url')" \
-            --no-verbose \
-            --output-document=/usr/bin/hadolint && \
-            chmod +x /usr/bin/hadolint
-
-
 COPY yamllint.config /
 COPY markdownlint.yml /
-RUN  chmod 755 /yamllint.config 
+RUN  chmod 755 /yamllint.config
+
+WORKDIR /usr/bin/
+COPY --link --from=hadolint --chmod=0755 /hadolint /
 
 WORKDIR /
 COPY babellint ./
