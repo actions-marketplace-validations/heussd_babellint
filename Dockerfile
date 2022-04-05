@@ -35,7 +35,7 @@ RUN  chmod 755 /yamllint.config
 
 WORKDIR /usr/bin/
 
-COPY 	 --link --from=hadolint/hadolint --chmod=0755 /bin/hadolint /hadolint
+COPY 	 --link --from=hadolint/hadolint --chmod=0755 /bin/hadolint ./
 
 WORKDIR /
 COPY babellint ./
