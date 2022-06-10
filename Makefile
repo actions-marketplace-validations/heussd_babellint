@@ -1,14 +1,14 @@
 # Naming seems to be buggy
 IMAGE?=thisisignoredforsomereason:babellint
 
-default: build
+default: buildkitd-start build
 
 buildkitd-start:
-	@-podman run -d --name buildkitd --privileged moby/buildkit:latest
-	@-podman start buildkitd
+	@-docker run -d --name buildkitd --privileged moby/buildkit:latest
+	@-docker start buildkitd
 
 buildkitd-stop:
-	@-podman stop buildkitd
+	@-docker stop buildkitd
 
 build:
 	@buildctl \
@@ -24,5 +24,5 @@ build:
 		#--addr=tcp://$(shell multipass info podman --format json | jq -r ".info.podman.ipv4[]"):1234 \
 
 buildandrun:
-	docker compose build
+	docker-compose build
 	
