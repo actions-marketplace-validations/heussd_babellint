@@ -1,28 +1,28 @@
 # babellint
 
-Lints files using multiple third-party linters:
+Lintet Dateien mithilfe verschiedener Third-Party-Linter:
 
-![babellint working through all files of a git repository](babellint.gif)
+![babellint während es sich durch die Dateien eines Git Repositories arbeitet](babellint.gif)
 
 - Dockerfile: [hadolint](https://github.com/hadolint/hadolint/)
 - JSON: [jq](https://github.com/stedolan/jq/)
 - Markdown: [markdownlint](https://github.com/markdownlint/markdownlint)
 - Python: [flake8](https://github.com/PyCQA/flake8)
-- Shell scripts: [shellcheck](https://github.com/koalaman/shellcheck)
+- Shell Skripts: [shellcheck](https://github.com/koalaman/shellcheck)
 - YAML: [yamllint](https://github.com/adrienverge/yamllint)
 
 
-## Usage
+## Benutzung
 
 
-### Command line
+### Kommandozeile
 
 ```sh
 alias babellint='docker run --rm --interactive --tty -v $(pwd):$(pwd) -w $(pwd) ghcr.io/heussd/babellint:main'
 ```
 
 
-#### Linting specific files
+#### Gezielt Dateien linten
 
 ```sh
 babellint docker-compose.yml
@@ -30,7 +30,7 @@ babellint README.md
 ```
 
 
-#### Linting all files of a git repository
+#### Alle Dateien eines Git Repositories linten
 
 ```sh
 cd $gitroot
@@ -45,4 +45,4 @@ babellint
   uses: heussd/babellint@main
 ```
 
-[Babellint is also using the babellint GitHub Action to ... babellint.](.github/workflows/babellint.yml)
+[Babellint nutzt selbst die Babellint GitHub Action um sich zu ... babellinten.](https://github.com/heussd/babellint/blob/main/.github/workflows/babellint.yml)
