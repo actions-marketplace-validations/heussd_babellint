@@ -23,7 +23,8 @@ RUN   apt-get update && \
 
 RUN   pip3 install --no-cache-dir \
       yamllint==1.26.1 \
-      flake8==3.9.1
+      flake8==3.9.1 \
+      importlib-metadata==4.13.0
 
 RUN   npm install -g\
       markdownlint-cli@~0.27
