@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.4
 
-FROM hadolint/hadolint as hadolint
+FROM hadolint/hadolint:2.12.0-debian as hadolint
 FROM node:current-buster
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
