@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1.4
 
+FROM hadolint/hadolint as hadolint
 FROM node:current-buster
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -36,7 +37,7 @@ RUN  chmod 755 /yamllint.config
 
 WORKDIR /usr/bin/
 
-COPY 	 --link --from=hadolint/hadolint --chmod=0755 /bin/hadolint ./
+COPY 	 --link --from=hadolint --chmod=0755 /bin/hadolint ./
 
 WORKDIR /
 COPY babellint ./
