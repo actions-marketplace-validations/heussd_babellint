@@ -14,6 +14,7 @@ RUN   apt-get update && \
       git=1* \
       shellcheck=0* \
       # yamllint
+      python3-yaml=3* \
       python3=$PYTHON_VERSION \
       python3-dev=${PYTHON_VERSION} \
       python3-pip=18* \
